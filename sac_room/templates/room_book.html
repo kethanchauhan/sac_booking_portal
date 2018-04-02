@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="container">
+    <h2>SAC Room Booking Form</h2>
+    <form class="form-horizontal" method="post" action="/booking/room_book/">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="sac_room">Select SAC Room:</label>
+            <select class="col-sm-10" name="sac_room" id="sac_room" required="true">
+                {% for sac_room in sac_rooms %}
+                    <option>{{ sac_room.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="start_date">Start Date:</label>
+            <div class='input-group date' id='start_date'>
+                <input type='date' name="start_date" class="form-control" required="true"/>
+                <span class="input-group-addon">
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="end_date">End Date:</label>
+            <div class='input-group date' id='end_date'>
+                <input type='date' name="end_date" class="form-control" required="true"/>
+                <span class="input-group-addon">
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+        </div>
+    </form>
+    {% if message %}
+        <div class="alert alert-danger" role="alert"><span>{{message}}</span></div>
+    {% endif %}
+</div>
+
+
+</body>
+</html>

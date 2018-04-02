@@ -1,0 +1,124 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .button-div {
+            background-color: #303F9F;
+            border-radius: 4px;
+            display: inline-block;
+            font-family: sans-serif;
+            padding: 12px;
+        }
+
+        .button-anchor {
+            color: #FFFFFF;
+            font-size: 20px;
+        }
+
+        .anchor-no-decor {
+            text-decoration: none;
+        }
+
+        .logout-div {
+            padding: 4px;
+        }
+
+        .logout-anchor {
+            color: #727272;
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+
+
+    </style>
+    <script>
+        function adjust_iframe_height() {
+            var body = document.getElementById('body');
+            var bodyStyle = window.getComputedStyle(body);
+            var actual_height = parseFloat(bodyStyle.height) + 1;
+            var actual_width = parseFloat(bodyStyle.width) + 1;
+            var message = 'sso-iframe://' + actual_height + ':' + actual_width;
+            parent.postMessage(message, '*');
+        }
+    </script>
+</head>
+
+<body>
+<div class="container" id="main">
+    <div class="row">
+        <div class="col s12 m12">
+            <div class="card white">
+                <div class="card-content">
+                    <span class="card-title">SAC ROOM BOOKING PORTAL</span>
+                    <p>Use your Ldap account to enter the portal</p>
+
+                    <br>
+                    <div id="sso-root">
+                        <div class="logout-div">
+                            <input type="button" class="btn btn-link" value="LOGIN AS OTHER USER"
+                                   onclick="location.href= 'http://gymkhana.iitb.ac.in/sso/account/logout/?next=/sso/oauth/authorize/%3Fclient_id%3DenqQGWG4g57DbnsZTfbJcvC6rTttmYfXfuKT7xEk%26scope%3Dbasic%20profile%20program%20insti_address%26redirect_uri%3Dhttp%3A//127.0.0.1%3A8000/login%26response_type%3Dcode';">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="{% static 'script/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'script/materialize.js' %}"></script>
+<script src="{% static 'script/login.js' %}" type="application/javascript"></script>
+
+<script type="application/javascript">
+
+
+    $(".button-collapse").sideNav();
+    new SSO_JS({
+        config: {
+            client_id: 'enqQGWG4g57DbnsZTfbJcvC6rTttmYfXfuKT7xEk',   // Compulsory
+            scope: ['basic', 'profile', 'program', 'insti_address'],    // Optional. Default is  ['basic']
+            state: '', // Optional. Default None
+            response_type: 'token',  // Optional. Default is 'code'
+            redirect_uri: '{{settings.REDIRECT_URI}}',
+            new_window: 'false',    // Optional.
+                                    // Where authorization page should be opened in new tab or
+                                    // same tab Default is false.
+            sso_root: document.getElementById('sso-root'),
+            /* Optional
+             document.getElementById don't work if your element is not in light DOM. In that case you need to
+             provide selector here. In most of the cases this will work.
+             */
+        },
+        colors: { // All Optional
+            button_div_bg_color: '303F9F', // Background color of button
+            button_anchor_color: 'FFFFFF', // Font color of Button
+            logout_anchor_color: '727272', // Font color of logout mark (The one with 'Login as other user'
+        },
+    }).init();
+
+    if (window.location.href.indexOf('#') >= 0) {
+        window.location.replace(window.location.href.replace("#", "?"));
+    }
+
+</script>
+
+</body>
+</html>
+
